@@ -1,0 +1,4 @@
+//view
+public class GamePanel {
+    
+}

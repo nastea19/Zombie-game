@@ -6,15 +6,24 @@ import javax.swing.*;
 //Runnable is the key for using Threads
 public class GamePanel extends JPanel implements Runnable {
 
+    // set pleayer's default position
+    int playerX = 100;
+    int playerY = 100;
+    int playerSpeed = 4;
+
+    static int rowCount = 12;
+    static int columnCount = 18;
+    static int tileSize = 32; // pixels
+
     public GamePanel() {
         setBackground(Color.BLACK);
+        this.addKeyListener(keyH);
+        // ?
+        this.setFocusable(true);
     }
 
     public static void main(String[] args) {
         // Dimensions and scaling of the screen
-        int rowCount = 12;
-        int columnCount = 18;
-        int tileSize = 32; // pixels
         int boardWidth = columnCount * tileSize;
         int boardHeight = rowCount * tileSize;
 
@@ -29,12 +38,23 @@ public class GamePanel extends JPanel implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // determines if the user clicks on the x button of the window
 
+        panel.startGameThread();
     }
 
     @Override
+    // "super" relates to the parent class (JPanel)
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.white);
+        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        g2.dispose();
     }
+
+    // FPS
+    int FPS = 60;
+
+    InputController keyH = new InputController();
 
     // keeps the program running until you stop it
     // useful for repetitive processes (fps)
@@ -51,6 +71,43 @@ public class GamePanel extends JPanel implements Runnable {
     // starting the thread causes the object's run method to be called in that
     // separately executing thread
     public void run() {
-        // throw new UnsupportedOperationException("Unimplemented method 'run'");
+        // we use nanoseconds
+        double drawInterval = 1000000000 / FPS; // 0.01666
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
+        // as long as the thread exists, the game will update
+        while (gameThread != null) {
+
+            currentTime = System.nanoTime();
+
+            //checking how much time passed??
+            delta += (currentTime - lastTime) / drawInterval;
+
+            lastTime = currentTime;
+
+            if (delta >= 1) {
+                update();
+                repaint();
+                delta--;
+            }
+        }
+    }
+
+    // key input is catched by InputController and updates the player coordinates
+    // and calls the repaint component
+    public void update() {
+        // playerSpeed is the distance measured in pixels by which the player will move
+        // in the according direction
+        if (keyH.upPressed == true) {
+            playerY -= playerSpeed;
+        } else if (keyH.downPressed == true) {
+            playerY += playerSpeed;
+        } else if (keyH.leftPressed == true) {
+            playerX -= playerSpeed;
+        } else if (keyH.rightPressed == true) {
+            playerX += playerSpeed;
+        }
     }
 }

@@ -1,5 +1,7 @@
 //Handles keyboard input
 
+package main;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

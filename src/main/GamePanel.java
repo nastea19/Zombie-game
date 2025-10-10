@@ -1,7 +1,15 @@
 //view
+package main;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.nio.Buffer;
+
 import javax.swing.*;
+
+import tile.TileManager;
 
 //Runnable is the key for using Threads
 public class GamePanel extends JPanel implements Runnable {
@@ -11,44 +19,51 @@ public class GamePanel extends JPanel implements Runnable {
     int playerY = 100;
     int playerSpeed = 4;
 
-    static int rowCount = 12;
-    static int columnCount = 18;
-    static int tileSize = 32; // pixels
+    // screen settings
+    final int rowCount = 12;
+    final int columnCount = 18;
+    public int tileSize = 32; // pixels
+    public int boardWidth = columnCount * tileSize;
+    public int boardHeight = rowCount * tileSize;
 
     public GamePanel() {
-        setBackground(Color.BLACK);
+        setBackground(Color.GREEN);
         this.addKeyListener(keyH);
         // ?
         this.setFocusable(true);
+        this.setPreferredSize(new Dimension(boardWidth, boardHeight));
+        this.setDoubleBuffered(true);
     }
 
     public static void main(String[] args) {
-        // Dimensions and scaling of the screen
-        int boardWidth = columnCount * tileSize;
-        int boardHeight = rowCount * tileSize;
+        
 
         JFrame frame = new JFrame("Zombie Combat"); // Creates the window
         GamePanel panel = new GamePanel(); // Creates an instance of our custom game panel
 
-        frame.add(panel); // add the oanel to the window so it becomes the visible area we draw on
+        frame.add(panel); // add the panel to the window so it becomes the visible area we draw on
+        frame.pack();
         frame.setVisible(true); // makes the window visible
-        frame.setSize(boardWidth, boardHeight); // sets the size of the frame
         frame.setLocationRelativeTo(null); // sets the window on the center of the screen
         frame.setResizable(false); // stops the user from resizing the window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // determines if the user clicks on the x button of the window
+        // determines if the user clicks on the x button of the window          
 
         panel.startGameThread();
     }
+
+    public TileManager tileManager = new TileManager(this);
 
     @Override
     // "super" relates to the parent class (JPanel)
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        tileManager.draw(g2); 
         g2.setColor(Color.white);
         g2.fillRect(playerX, playerY, tileSize, tileSize);
         g2.dispose();
+
     }
 
     // FPS

@@ -2,13 +2,7 @@
 package main;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.nio.Buffer;
-
 import javax.swing.*;
-
 import tile.TileManager;
 
 //Runnable is the key for using Threads
@@ -26,6 +20,8 @@ public class GamePanel extends JPanel implements Runnable {
     public int boardWidth = columnCount * tileSize;
     public int boardHeight = rowCount * tileSize;
 
+    public TileManager tileManager;
+
     public GamePanel() {
         setBackground(Color.GREEN);
         this.addKeyListener(keyH);
@@ -33,6 +29,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(boardWidth, boardHeight));
         this.setDoubleBuffered(true);
+
+        tileManager = new TileManager(this);
     }
 
     public static void main(String[] args) {
@@ -51,8 +49,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         panel.startGameThread();
     }
-
-    public TileManager tileManager = new TileManager(this);
 
     @Override
     // "super" relates to the parent class (JPanel)

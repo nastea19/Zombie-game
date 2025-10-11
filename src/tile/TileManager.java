@@ -4,12 +4,13 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-
+import entities.Base;
 import main.GamePanel;
 
 public class TileManager {
-    GamePanel gamePanel;
-    Tile[] tile;
+    private GamePanel gamePanel;
+    private Tile[] tile;
+    private Base base;
 
     public TileManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -19,14 +20,12 @@ public class TileManager {
         baseSetup();
     }
 
-    public Base base;
-
     private void baseSetup() {
         try {
             // Load base image from resources
             BufferedImage baseImage = ImageIO.read(getClass().getResourceAsStream("/resources/stone.png"));
             
-            int baseWidth = gamePanel.boardWidth / 4;
+            int baseWidth = gamePanel.boardWidth / 6;
             int baseHeight = gamePanel.boardHeight;
             int x = 0;
             int y = 0;
@@ -47,6 +46,14 @@ public class TileManager {
      */
 
     public void draw(Graphics2D g2) {
-        base.draw(g2);
+        if (base != null) {
+            base.draw(g2);
+        }
+    }
+    
+    public void update() {
+        if (base != null) {
+            base.update();
+        }
     }
 }

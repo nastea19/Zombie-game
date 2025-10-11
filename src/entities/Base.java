@@ -2,6 +2,10 @@ package entities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import main.GamePanel;
 
 /**
@@ -10,7 +14,7 @@ import main.GamePanel;
  * When zombies deal damage, base HP decreases.
  * When HP <= 0, game is over.
  */
-public class Base extends Entity{
+public class Base extends Entity {
     public Base(GamePanel gamePanel, int x, int y, int width, int height, BufferedImage image) {
         super(gamePanel, x, y, width, height);
         this.image = image;
@@ -18,10 +22,19 @@ public class Base extends Entity{
 
     }
 
+    private boolean destroyed = false;
+
+    // Check if the base HP has reached 0 and if it hasn’t already been destroyed
+    // If so, mark as destroyed, show a Game Over popup safely on the Event Dispatch Thread,
+    // and exit the game
     @Override
     public void update() {
-        if(hp <= 0) {
-            // destruction logic
+        if (hp <= 0 && !destroyed) {
+            destroyed = true;
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(gamePanel, "Game Over!");
+                System.exit(0);
+            });
         }
     }
 

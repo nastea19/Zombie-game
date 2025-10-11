@@ -3,16 +3,15 @@ package main;
 
 import java.awt.*;
 import javax.swing.*;
+
+import entities.Bullet;
+import entities.Player;
 import tile.TileManager;
+
+import java.util.ArrayList;
 
 //Runnable is the key for using Threads
 public class GamePanel extends JPanel implements Runnable {
-
-    // set pleayer's default position
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
-
     // screen settings
     final int rowCount = 12;
     final int columnCount = 18;
@@ -21,6 +20,8 @@ public class GamePanel extends JPanel implements Runnable {
     public int boardHeight = rowCount * tileSize;
 
     public TileManager tileManager;
+    InputController keyH = new InputController();
+    Player player;
 
     public GamePanel() {
         setBackground(Color.GREEN);
@@ -31,10 +32,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
 
         tileManager = new TileManager(this);
+
+        // width/height for player (e.g., one tile)
+        player = new Player(this, keyH, 100, 100, tileSize, tileSize);
     }
 
     public static void main(String[] args) {
-        
 
         JFrame frame = new JFrame("Zombie Combat"); // Creates the window
         GamePanel panel = new GamePanel(); // Creates an instance of our custom game panel
@@ -45,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
         frame.setLocationRelativeTo(null); // sets the window on the center of the screen
         frame.setResizable(false); // stops the user from resizing the window
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // determines if the user clicks on the x button of the window          
+        // determines if the user clicks on the x button of the window
 
         panel.startGameThread();
     }
@@ -55,18 +58,16 @@ public class GamePanel extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        tileManager.draw(g2); 
-        g2.setColor(Color.white);
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
-        g2.dispose();
-
+        tileManager.draw(g2);
+        player.draw(g2);
+        //draw each bullet in the list
+        for (Bullet b : bullets) {
+            b.draw(g2);
+        }
     }
 
     // FPS
     int FPS = 60;
-
-    InputController keyH = new InputController();
-
     // keeps the program running until you stop it
     // useful for repetitive processes (fps)
     Thread gameThread;
@@ -93,7 +94,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             currentTime = System.nanoTime();
 
-            //checking how much time passed??
+            // checking how much time passed??
             delta += (currentTime - lastTime) / drawInterval;
 
             lastTime = currentTime;
@@ -106,19 +107,26 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    // key input is catched by InputController and updates the player coordinates
-    // and calls the repaint component
     public void update() {
-        // playerSpeed is the distance measured in pixels by which the player will move
-        // in the according direction
-        if (keyH.upPressed == true) {
-            playerY -= playerSpeed;
-        } else if (keyH.downPressed == true) {
-            playerY += playerSpeed;
-        } else if (keyH.leftPressed == true) {
-            playerX -= playerSpeed;
-        } else if (keyH.rightPressed == true) {
-            playerX += playerSpeed;
+        player.update(); // player handles its own movement
+
+        // loops through all bullets in the list
+        for (int i = 0; i < bullets.size(); i++) {
+            Bullet bullet = bullets.get(i); // Get one bullet from the list
+            bullet.update(); 
+
+            // if the bullet goes off-screen, remove it from the list
+            if (bullet.isOffScreen()) {
+                bullets.remove(i);
+                i--; // Adjust index since list size changed
+            }
         }
     }
+
+    // This list stores all active bullets currently on the screen.
+    // each time the player shoots, a new bullet is added here
+    // in the update loop, each bullet will move and be removed when it goes off-screen
+    public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+
+
 }

@@ -15,10 +15,12 @@ import main.GamePanel;
  * When HP <= 0, game is over.
  */
 public class Base extends Entity {
+
     public Base(GamePanel gamePanel, int x, int y, int width, int height, BufferedImage image) {
         super(gamePanel, x, y, width, height);
         this.image = image;
-        this.hp = this.maxHp = 100;
+        this.maxHp = 1000;
+        this.hp = maxHp;
 
     }
 
@@ -40,15 +42,13 @@ public class Base extends Entity {
 
     @Override
     public void draw(Graphics2D g2) {
+        // draw the base made of tiles
         for (int i = 0; i < width; i += gamePanel.tileSize) {
             for (int j = 0; j < height; j += gamePanel.tileSize) {
                 g2.drawImage(image, x + i, y + j, gamePanel.tileSize, gamePanel.tileSize, null);
             }
         }
 
-        g2.setColor(Color.GREEN);
-        g2.fillRect(5, 5, width * hp / 100, 5);
-        g2.setColor(Color.BLACK);
-        g2.drawRect(5, 5, width, 5);
+        drawHpBar(g2, 5, 5);
     }
 }

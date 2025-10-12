@@ -42,11 +42,7 @@ public class Player extends Entity {
         g2.setColor(Color.BLUE);
         g2.fillRect(x, y, width, height);
 
-        // Draw HP bar
-        g2.setColor(Color.RED);
-        g2.fillRect(x, y - 10, width * hp / maxHp, 5);
-        g2.setColor(Color.BLACK);
-        g2.drawRect(x, y - 10, width, 5);
+        drawHpBar(g2, 0, -10);
     }
 
 }

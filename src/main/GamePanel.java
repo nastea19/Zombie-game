@@ -6,6 +6,8 @@ import javax.swing.*;
 
 import entities.Bullet;
 import entities.Player;
+import entities.Zombie;
+import entities.Base;
 import tile.TileManager;
 
 import java.util.ArrayList;
@@ -22,9 +24,20 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileManager;
     InputController keyH = new InputController();
     Player player;
+    Zombie zombie;
+
+    public int min;
+    public int max;
+    
+    /**
+     * Might put this method in a new class for utils.
+     */
+    public int getRandomNumber(int min, int max) {
+        return (int) (Math.random() * (max - min) + min); 
+    }
 
     public GamePanel() {
-        setBackground(Color.GREEN);
+        setBackground(Color.black);
         this.addKeyListener(keyH);
         // ?
         this.setFocusable(true);
@@ -32,9 +45,11 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
 
         tileManager = new TileManager(this);
+        Base base = tileManager.getBase();
 
         // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
+        zombie = new Zombie(this, boardWidth - tileSize, getRandomNumber(0 +tileSize, boardHeight) - tileSize, tileSize, tileSize, base); 
     }
 
     public static void main(String[] args) {
@@ -60,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
         player.draw(g2);
+        zombie.draw(g2);
         //draw each bullet in the list
         for (Bullet b : bullets) {
             b.draw(g2);
@@ -109,6 +125,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         player.update(); // player handles its own movement
+        zombie.update(); // zombie moves in direction of the base (left)
 
         // loops through all bullets in the list
         for (int i = 0; i < bullets.size(); i++) {

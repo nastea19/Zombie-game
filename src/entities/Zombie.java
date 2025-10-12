@@ -9,11 +9,11 @@ import entities.Entity;
 /**
  * Zombies autogenerate on a random position on the right end of the sceen.
  * They move in the direction of the base.
- * When a zombie-player or zombie-base  collision occurs, zombie deals damage.
+ * When a zombie-player or zombie-base collision occurs, zombie deals damage.
  * When a zombie-bullet collision occurs, zombie takes damage, bullet disapears.
  * Zombie dies after its HP is below or equal to 0.
  */
-public class Zombie extends Entity { 
+public class Zombie extends Entity {
     private Base base;
 
     public Zombie(GamePanel gamePanel, int x, int y, int width, int height, Base base) {
@@ -24,7 +24,7 @@ public class Zombie extends Entity {
         this.speed = 1;
     }
 
-    private long lastAttackTime = 0; 
+    private long lastAttackTime = 0;
     private long attackCooldown = 1000; // 1000 milliseconds = 1 second
 
     private void attackBase() {

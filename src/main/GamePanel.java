@@ -136,6 +136,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (bullet.isOffScreen()) {
                 bullets.remove(i);
                 i--; // Adjust index since list size changed
+                continue;
             }
         }
     }

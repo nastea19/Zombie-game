@@ -15,7 +15,9 @@ public class Entity {
     protected int height;
     protected int speed;
 
-    protected BufferedImage image;
+    public BufferedImage image, up, down, right, left;
+    public String direction;
+
 
     protected int hp;
     protected int maxHp;

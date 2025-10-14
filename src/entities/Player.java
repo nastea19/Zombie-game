@@ -2,6 +2,10 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.InputController;
@@ -15,10 +19,25 @@ public class Player extends Entity {
 
     public Player(GamePanel gp, InputController keyH, int x, int y, int width, int height) {
         super(gp, x, y, width, height);
+        this.gp = gp;
         this.keyH = keyH;
         this.speed = 4;
         this.hp = 100;
         this.maxHp = 100;
+
+        getPlayerImage();
+    }
+
+    // extracting the sprite images
+    public void getPlayerImage() {
+        try {
+            up = ImageIO.read(getClass().getResourceAsStream("/resources/up.jpg"));
+            down = ImageIO.read(getClass().getResourceAsStream("/resources/down.jpg"));
+            left = ImageIO.read(getClass().getResourceAsStream("/resources/left.jpg"));
+            right = ImageIO.read(getClass().getResourceAsStream("/resources/right.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     GamePanel gp;
@@ -73,16 +92,29 @@ public class Player extends Entity {
         }
 
         // create a new bullet object
-        Bullet bullet = new Bullet(gamePanel, bulletX, bulletY, 10, 5, dx, dy, bulletSpeed);
-
+        Bullet bullet = new Bullet(gp, bulletX, bulletY, 10, 5, dx, dy, bulletSpeed);
         // add it to the list of active bullets
-        gamePanel.bullets.add(bullet);
+        gp.bullets.add(bullet);
     }
 
     @Override
     public void draw(Graphics2D g2) {
-        g2.setColor(Color.BLUE);
-        g2.fillRect(x, y, width, height);
+        // g2.setColor(Color.BLUE);
+        // g2.fillRect(x, y, width, height);
+        BufferedImage image = null;
+
+        // changing the look of the sprite based on the direction it is going
+        if (direction.equals("up")) {
+            image = up;
+        } else if (direction.equals("down")) {
+            image = down;
+        } else if (direction.equals("left")) {
+            image = left;
+        } else if (direction.equals("right")) {
+            image = right;
+        }
+
+        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
 
         drawHpBar(g2, 0, -10);
     }

@@ -24,7 +24,7 @@ public class TileManager {
         try {
             // Load base image from resources
             BufferedImage baseImage = ImageIO.read(getClass().getResourceAsStream("/resources/stone.png"));
-
+            
             int baseWidth = gamePanel.boardWidth / 6;
             int baseHeight = gamePanel.boardHeight;
             int x = 0;
@@ -50,7 +50,7 @@ public class TileManager {
             base.draw(g2);
         }
     }
-
+    
     public void update() {
         if (base != null) {
             base.update();

@@ -28,12 +28,12 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int min;
     public int max;
-    
+
     /**
      * Might put this method in a new class for utils.
      */
     public int getRandomNumber(int min, int max) {
-        return (int) (Math.random() * (max - min) + min); 
+        return (int) (Math.random() * (max - min) + min);
     }
 
     public GamePanel() {
@@ -49,7 +49,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
-        zombie = new Zombie(this, boardWidth - tileSize, getRandomNumber(0 +tileSize, boardHeight) - tileSize, tileSize, tileSize, base); 
+        zombie = new Zombie(this, boardWidth - tileSize, getRandomNumber(0 + tileSize, boardHeight) - tileSize,
+                tileSize, tileSize, base);
     }
 
     public static void main(String[] args) {
@@ -76,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
         tileManager.draw(g2);
         player.draw(g2);
         zombie.draw(g2);
-        //draw each bullet in the list
+        // draw each bullet in the list
         for (Bullet b : bullets) {
             b.draw(g2);
         }
@@ -130,7 +131,7 @@ public class GamePanel extends JPanel implements Runnable {
         // loops through all bullets in the list
         for (int i = 0; i < bullets.size(); i++) {
             Bullet bullet = bullets.get(i); // Get one bullet from the list
-            bullet.update(); 
+            bullet.update();
 
             // if the bullet goes off-screen, remove it from the list
             if (bullet.isOffScreen()) {
@@ -143,8 +144,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     // This list stores all active bullets currently on the screen.
     // each time the player shoots, a new bullet is added here
-    // in the update loop, each bullet will move and be removed when it goes off-screen
+    // in the update loop, each bullet will move and be removed when it goes
+    // off-screen
     public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-
 
 }

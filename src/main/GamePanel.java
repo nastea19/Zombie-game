@@ -75,14 +75,13 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
-        player.draw(g2);
         zombie.draw(g2);
         // draw each bullet in the list
         for (Bullet b : bullets) {
             b.draw(g2);
         }
 
-        //the player disappears when HP <=0
+        // the player disappears when HP <=0
         if (player != null) {
             player.draw(g2);
         }
@@ -132,8 +131,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         if (player != null) {
             player.update(); // player handles its own movement
-        } 
-        
+        }
+
         if (zombie != null) {
             zombie.update(); // move zombie
         }
@@ -158,7 +157,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (collision) {
                 // Zombie deals damage directly to player
-                player.takeDamage(10);
+                player.takeDamage(1);
             }
 
             // Remove player if HP <= 0

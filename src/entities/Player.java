@@ -1,6 +1,5 @@
 package entities;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -48,16 +47,20 @@ public class Player extends Entity {
     public void update() {
         // playerSpeed is the distance measured in pixels by which the player will move
         // in the according direction
-        if (keyH.upPressed) {
+        // also checks the boundaries so the player can not go outside the game screen
+        if (keyH.upPressed && y - speed >= 0) {
             y -= speed;
             direction = "up"; // remember current direction
-        } else if (keyH.downPressed) {
+        }
+        if (keyH.downPressed && y + speed + height <= gp.boardHeight) {
             y += speed;
             direction = "down";
-        } else if (keyH.leftPressed) {
+        }
+        if (keyH.leftPressed && x - speed >= 0) {
             x -= speed;
             direction = "left";
-        } else if (keyH.rightPressed) {
+        }
+        if (keyH.rightPressed && x + speed + width <= gp.boardWidth) {
             x += speed;
             direction = "right";
         }
@@ -68,9 +71,19 @@ public class Player extends Entity {
         }
     }
 
+    // control the rate at which the bullets are spawned
+    private long lastShotTime = 0;
+    private long shootCooldown = 300; // milliseconds
+
     // Creates a new bullet at the player's current position
     // and adds it to the game panel's bullet list.
     private void shoot() {
+
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastShotTime < shootCooldown) {
+            return;
+        }
+        lastShotTime = currentTime;
         // set bullet’s starting position (from player center)
         int bulletX = x + width / 2;
         int bulletY = y + height / 2;
@@ -97,6 +110,18 @@ public class Player extends Entity {
         gp.bullets.add(bullet);
     }
 
+    private long lastAttackTime = 0;
+    private long attackCooldown = 1000; // 1000 milliseconds = 1 second
+
+    public void attack(Entity target, int damageAmount) {
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastAttackTime >= attackCooldown) {
+            target.takeDamage(damageAmount);
+            lastAttackTime = currentTime;
+        }
+    }
+
     @Override
     public void draw(Graphics2D g2) {
         // g2.setColor(Color.BLUE);
@@ -114,8 +139,9 @@ public class Player extends Entity {
             image = right;
         }
 
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
-
+        if (image != null) {
+            g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+        }
         drawHpBar(g2, 0, -10);
     }
 

@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileManager;
     InputController keyH = new InputController();
     Player player;
-    Zombie zombie;
+    public Zombie zombie;
 
     public int min;
     public int max;
@@ -134,10 +134,9 @@ public class GamePanel extends JPanel implements Runnable {
             bullet.update();
 
             // if the bullet goes off-screen, remove it from the list
-            if (bullet.isOffScreen()) {
+            if (!bullet.isActive()) {
                 bullets.remove(i);
                 i--; // Adjust index since list size changed
-                continue;
             }
         }
     }

@@ -40,6 +40,18 @@ public class Entity {
         }
     }
 
+    private long lastAttackTime = 0;
+    private long attackCooldown = 1000; // 1000 milliseconds = 1 second
+
+    public void attack(Entity target, int damageAmount) {
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastAttackTime >= attackCooldown) {
+            target.takeDamage(damageAmount);
+            lastAttackTime = currentTime;
+        }
+    }
+
     protected void drawHpBar(Graphics2D g2, int offsetX, int offsetY) {
         if (maxHp <= 0) {
             return;

@@ -24,25 +24,13 @@ public class Zombie extends Entity {
         this.speed = 1;
     }
 
-    private long lastAttackTime = 0;
-    private long attackCooldown = 1000; // 1000 milliseconds = 1 second
-
-    private void attackBase() {
-        long currentTime = System.currentTimeMillis();
-
-        if (currentTime - lastAttackTime >= attackCooldown) {
-            base.takeDamage(10);
-            lastAttackTime = currentTime;
-        }
-    }
-
     @Override
     public void update() {
         if (x > base.x + base.width) {
             x -= speed;
-        } else {
-            attackBase();
-        }
+        } else if (x <= base.x + base.width){
+            attack(base, 10);
+        } 
     }
 
     @Override

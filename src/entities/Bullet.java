@@ -3,9 +3,10 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import main.GamePanel;
+import entities.Zombie;
 
 public class Bullet {
-
+    Zombie zombie;
     // reference to the main game panel (needed for screen dimensions)
     private GamePanel gamePanel;
 

@@ -81,6 +81,11 @@ public class GamePanel extends JPanel implements Runnable {
         for (Bullet b : bullets) {
             b.draw(g2);
         }
+
+        //the player disappears when HP <=0
+        if (player != null) {
+            player.draw(g2);
+        }
     }
 
     // FPS
@@ -125,8 +130,13 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update(); // player handles its own movement
-        zombie.update(); // zombie moves in direction of the base (left)
+        if (player != null) {
+            player.update(); // player handles its own movement
+        } 
+        
+        if (zombie != null) {
+            zombie.update(); // move zombie
+        }
 
         // loops through all bullets in the list
         for (int i = 0; i < bullets.size(); i++) {
@@ -137,6 +147,23 @@ public class GamePanel extends JPanel implements Runnable {
             if (!bullet.isActive()) {
                 bullets.remove(i);
                 i--; // Adjust index since list size changed
+            }
+        }
+
+        if (player != null && zombie != null) {
+            boolean collision = player.x < zombie.x + zombie.width &&
+                    player.x + player.width > zombie.x &&
+                    player.y < zombie.y + zombie.height &&
+                    player.y + player.height > zombie.y;
+
+            if (collision) {
+                // Zombie deals damage directly to player
+                player.takeDamage(10);
+            }
+
+            // Remove player if HP <= 0
+            if (player.getHp() <= 0) {
+                player = null; // player disappears
             }
         }
     }

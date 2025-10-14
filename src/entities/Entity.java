@@ -9,10 +9,10 @@ import main.GamePanel;
 public class Entity {
     protected GamePanel gamePanel;
 
-    protected int x; // x-coordinate of the entity
-    protected int y; // y-coordinate of the entity
-    protected int width; 
-    protected int height;
+    public int x; // x-coordinate of the entity
+    public int y; // y-coordinate of the entity
+    public int width; 
+    public int height;
     protected int speed;
 
     public BufferedImage image, up, down, right, left;

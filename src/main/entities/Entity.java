@@ -2,7 +2,7 @@ package entities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import main.GamePanel;
+import game.GamePanel;
 /**
  * Super class that is used for both player and zombie class.
  */

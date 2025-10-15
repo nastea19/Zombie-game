@@ -2,7 +2,7 @@ package entities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import main.GamePanel;
+import game.GamePanel;
 import entities.Base;
 import entities.Entity;
 
@@ -15,13 +15,17 @@ import entities.Entity;
  */
 public class Zombie extends Entity {
     private Base base;
-
+    private boolean active = true;
     public Zombie(GamePanel gamePanel, int x, int y, int width, int height, Base base) {
         super(gamePanel, x, y, width, height);
         this.base = base;
         this.maxHp = 100;
         this.hp = maxHp;
         this.speed = 1;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     @Override

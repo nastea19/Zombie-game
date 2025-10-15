@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import main.GamePanel;
-import main.InputController;
+import game.GamePanel;
+import game.InputController;
 
 public class Player extends Entity {
 
@@ -30,7 +30,7 @@ public class Player extends Entity {
     // extracting the sprite images
     public void getPlayerImage() {
         try {
-            up = ImageIO.read(getClass().getResourceAsStream("/resources/up.jpg"));
+            up = ImageIO.read(this.getClass().getResourceAsStream("/resources/up.jpg"));
             down = ImageIO.read(getClass().getResourceAsStream("/resources/down.jpg"));
             left = ImageIO.read(getClass().getResourceAsStream("/resources/left.jpg"));
             right = ImageIO.read(getClass().getResourceAsStream("/resources/right.jpg"));

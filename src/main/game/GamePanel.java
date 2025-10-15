@@ -1,15 +1,13 @@
 //view
-package main;
+package game;
 
-import java.awt.*;
-import javax.swing.*;
-
+import entities.Base;
 import entities.Bullet;
 import entities.Player;
 import entities.Zombie;
-import entities.Base;
+import java.awt.*;
+import javax.swing.*;
 import tile.TileManager;
-
 import java.util.ArrayList;
 
 //Runnable is the key for using Threads
@@ -20,6 +18,8 @@ public class GamePanel extends JPanel implements Runnable {
     public int tileSize = 32; // pixels
     public int boardWidth = columnCount * tileSize;
     public int boardHeight = rowCount * tileSize;
+
+    public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 
     public TileManager tileManager;
     InputController keyH = new InputController();
@@ -49,8 +49,12 @@ public class GamePanel extends JPanel implements Runnable {
 
         // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
-        zombie = new Zombie(this, boardWidth - tileSize, getRandomNumber(0 + tileSize, boardHeight) - tileSize,
-                tileSize, tileSize, base);
+
+        for (int i = 0; i < 3; i++) {
+            zombie = new Zombie(this, boardWidth - tileSize, 
+            getRandomNumber(0 + tileSize, boardHeight) - tileSize, tileSize, tileSize, base);
+            zombies.add(zombie);
+        }
     }
 
     public static void main(String[] args) {
@@ -75,7 +79,10 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
-        zombie.draw(g2);
+        // draw each zombie in the list
+        for (Zombie zombie: zombies) {
+            zombie.draw(g2);
+        }
         // draw each bullet in the list
         for (Bullet b : bullets) {
             b.draw(g2);
@@ -133,10 +140,11 @@ public class GamePanel extends JPanel implements Runnable {
             player.update(); // player handles its own movement
         }
 
-        if (zombie != null) {
-            zombie.update(); // move zombie
+        for (Zombie zombie: zombies) {
+            if (zombie != null) {
+                zombie.update(); // moves zombie
+            }
         }
-
         // loops through all bullets in the list
         for (int i = 0; i < bullets.size(); i++) {
             Bullet bullet = bullets.get(i); // Get one bullet from the list
@@ -148,7 +156,7 @@ public class GamePanel extends JPanel implements Runnable {
                 i--; // Adjust index since list size changed
             }
         }
-
+        
         if (player != null && zombie != null) {
             boolean collision = player.x < zombie.x + zombie.width &&
                     player.x + player.width > zombie.x &&
@@ -163,6 +171,10 @@ public class GamePanel extends JPanel implements Runnable {
             // Remove player if HP <= 0
             if (player.getHp() <= 0) {
                 player = null; // player disappears
+            }
+
+            if (zombie.getHp() <= 0) {
+                zombie = null; // zombie disappears
             }
         }
     }

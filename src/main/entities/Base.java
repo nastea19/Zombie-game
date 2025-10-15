@@ -6,7 +6,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import main.GamePanel;
+import game.GamePanel;
+
 
 /**
  * Base class represents the player's base in the game.

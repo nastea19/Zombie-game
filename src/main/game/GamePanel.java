@@ -29,7 +29,6 @@ public class GamePanel extends JPanel implements Runnable {
     private BufferedImage backgroundImage;
     InputController keyH = new InputController();
     Player player;
-    public Zombie zombie;
 
     public int min;
     public int max;
@@ -63,17 +62,16 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < 3; i++) {
             int x = boardWidth - tileSize;
             int y = getRandomNumber(0 + tileSize, boardHeight) - tileSize;
-            zombie = new Zombie(this, x, y, tileSize, tileSize, base);
-            zombies.add(zombie);
+            zombies.add(new Zombie(this, x, y, tileSize, tileSize, base));
         }
-        
+
     }
 
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Zombie Combat"); // Creates the window
         GamePanel panel = new GamePanel(); // Creates an instance of our custom game panel
-        
+
         frame.add(panel); // add the panel to the window so it becomes the visible area we draw on
         frame.pack();
         frame.setVisible(true); // makes the window visible
@@ -94,18 +92,19 @@ public class GamePanel extends JPanel implements Runnable {
         g.drawImage(backgroundImage, 0, 0, boardWidth, boardHeight, this); // draws a baxkground
         tileManager.draw(g2); // draws the base
 
-        
         // draw each zombie in the list:
-        for (Zombie zombie: zombies) {
+        for (Zombie zombie : zombies) {
             zombie.draw(g2);
         }
         // draw each bullet in the list
-        for (Bullet b : bullets) {
-            b.draw(g2);
+        synchronized (bullets) {
+            for (Bullet b : bullets) {
+                b.draw(g2);
+            }
         }
 
         // the player disappears when HP <=0
-        if (player != null) {
+        if (player != null && player.getHp() >= 0) {
             player.draw(g2);
         }
     }
@@ -156,34 +155,41 @@ public class GamePanel extends JPanel implements Runnable {
             player.update(); // player handles its own movement
         }
 
-        zombies.removeIf(zombie -> zombie.getHp() <= 0);
+        zombies.removeIf(z -> z.getHp() <= 0);
 
-        for (Zombie zombie: zombies) {
-            zombie.update();
-        }
-        // loops through all bullets in the list
-        for (int i = 0; i < bullets.size(); i++) {
-            Bullet bullet = bullets.get(i); // Get one bullet from the list
-            bullet.update();
-
-            // if the bullet goes off-screen, remove it from the list
-            if (!bullet.isActive()) {
-                bullets.remove(i);
-                i--; // Adjust index since list size changed
+        synchronized (zombies) {
+            for (Zombie z : zombies) {
+                z.update();
             }
         }
 
-        
-        
-        if (player != null && zombie != null) {
-            boolean collision = player.x < zombie.x + zombie.width &&
-                    player.x + player.width > zombie.x &&
-                    player.y < zombie.y + zombie.height &&
-                    player.y + player.height > zombie.y;
+        // loops through all bullets in the list
+        synchronized (bullets) {
+            for (int i = 0; i < bullets.size(); i++) {
+                Bullet bullet = bullets.get(i); // Get one bullet from the list
+                bullet.update();
 
-            if (collision) {
-                // Zombie deals damage directly to player
-                player.takeDamage(1);
+                // if the bullet goes off-screen, remove it from the list
+                if (!bullet.isActive()) {
+                    bullets.remove(i);
+                    i--; // Adjust index since list size changed
+                }
+            }
+        }
+
+        if (player != null) {
+            synchronized (zombies) {
+                for (Zombie z : zombies) {
+                    boolean collision = player.x < z.x + z.width
+                            && player.x + player.width > z.x
+                            && player.y < z.y + z.height
+                            && player.y + player.height > z.y;
+
+                    if (collision) {
+                        // Zombie deals damage directly to player
+                        player.takeDamage(1);
+                    }
+                }
             }
 
             // Remove player if HP <= 0
@@ -191,7 +197,6 @@ public class GamePanel extends JPanel implements Runnable {
                 player = null; // player disappears
             }
 
-           
         }
     }
 

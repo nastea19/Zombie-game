@@ -3,6 +3,8 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import game.GamePanel;
+import entities.Zombie;
+
 
 public class Bullet extends Entity {
 
@@ -28,16 +30,21 @@ public class Bullet extends Entity {
         y += dy * speed;
 
         // Collision with SINGLE zombie for now
-        if (gamePanel.zombie != null) {
-            // checking for intersection based on the zombie coordinates
-            boolean collision = x < gamePanel.zombie.x + gamePanel.zombie.width &&
-                    x + width > gamePanel.zombie.x &&
-                    y < gamePanel.zombie.y + gamePanel.zombie.height &&
-                    y + height > gamePanel.zombie.y;
+        if (gamePanel.zombies != null && !gamePanel.zombies.isEmpty()) {
+            synchronized (gamePanel.zombies) {
+                for (Zombie z : gamePanel.zombies) {
+                    // checking for intersection based on the zombie coordinates
+                    boolean collision = x < z.x + z.width &&
+                            x + width > z.x &&
+                            y < z.y + z.height &&
+                            y + height > z.y;
 
-            if (collision) {
-                gamePanel.zombie.takeDamage(10); // deal 10 damage
-                active = false; // bullet disappears
+                    if (collision) {
+                        z.takeDamage(10); // deal 10 damage
+                        active = false; // bullet disappears
+                        break;
+                    }
+                }
             }
         }
         // if off-screen, then the bullet can not deal damage

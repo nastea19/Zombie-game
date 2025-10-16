@@ -1,5 +1,10 @@
 package game;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
@@ -8,17 +13,26 @@ import javax.swing.JPanel;
 
 public class StartPanel extends JPanel{
     private JFrame frame;
+    private GamePanel gamePanel;
 
     public StartPanel(JFrame frame) {
         this.frame = frame;
-        setLayout(null);
-        setBounds(0, 0, 420, 420);;
+        setLayout(new GridBagLayout());
+        setPreferredSize(new Dimension(420, 420));
+        frame.setResizable(false);
 
         JButton startButton = new JButton("Start Game");
-
-        startButton.setBounds(150, 180, 120, 40);
+        startButton.setFocusable(false);
         startButton.addActionListener((ActionEvent e) -> StartGame());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0; 
+        gbc.gridy = 0; 
+        gbc.anchor = GridBagConstraints.CENTER; 
+        gbc.insets = new Insets(0, 0, 0, 0);
+        
         add(startButton);
+    
     }
 
     private void StartGame() {
@@ -30,9 +44,8 @@ public class StartPanel extends JPanel{
         frame.revalidate();
         frame.repaint();
 
-        gamePanel.setFocusable(true);
-        gamePanel.requestFocusInWindow();
-
         gamePanel.startGameThread();
+
+        gamePanel.requestFocusInWindow();
     }
 }

@@ -5,12 +5,16 @@ import entities.Base;
 import entities.Bullet;
 import entities.Player;
 import entities.Zombie;
+import entities.ZombieSpawner;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import tile.TileManager;
 import java.util.ArrayList;
 
@@ -24,6 +28,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int boardHeight = rowCount * tileSize;
 
     public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    private ZombieSpawner zombieSpawner;
     public Base base;
 
     public TileManager tileManager;
@@ -34,12 +39,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int min;
     public int max;
 
-    /**
-     * Might put this method in a new class for utils.
-     */
-    public int getRandomNumber(int min, int max) {
-        return (int) (Math.random() * (max - min) + min);
-    }
+    
 
     public GamePanel() {
         try {
@@ -60,12 +60,9 @@ public class GamePanel extends JPanel implements Runnable {
         // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
 
-        for (int i = 0; i < 3; i++) {
-            int x = boardWidth - tileSize;
-            int y = getRandomNumber(0 + tileSize, boardHeight) - tileSize;
-            zombies.add(new Zombie(this, x, y, tileSize, tileSize, base));
-        }
+        zombieSpawner = new ZombieSpawner(zombies, boardHeight, boardWidth, tileSize, base);
 
+        
     }
 
 
@@ -152,6 +149,7 @@ public class GamePanel extends JPanel implements Runnable {
                 z.update();
             }
         }
+        zombieSpawner.update();
 
         // loops through all bullets in the list
         synchronized (bullets) {

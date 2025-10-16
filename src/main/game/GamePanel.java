@@ -68,21 +68,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
-    public static void main(String[] args) {
-
-        JFrame frame = new JFrame("Zombie Combat"); // Creates the window
-        GamePanel panel = new GamePanel(); // Creates an instance of our custom game panel
-
-        frame.add(panel); // add the panel to the window so it becomes the visible area we draw on
-        frame.pack();
-        frame.setVisible(true); // makes the window visible
-        frame.setLocationRelativeTo(null); // sets the window on the center of the screen
-        frame.setResizable(false); // stops the user from resizing the window
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // determines if the user clicks on the x button of the window
-
-        panel.startGameThread();
-    }
 
     @Override
     // "super" relates to the parent class (JPanel)

@@ -16,6 +16,7 @@ import entities.Entity;
 public class Zombie extends Entity {
     private Base base;
     private boolean active = true;
+
     public Zombie(GamePanel gamePanel, int x, int y, int width, int height, Base base) {
         super(gamePanel, x, y, width, height);
         this.base = base;
@@ -32,9 +33,9 @@ public class Zombie extends Entity {
     public void update() {
         if (x > base.x + base.width) {
             x -= speed;
-        } else if (x <= base.x + base.width){
+        } else if (x <= base.x + base.width) {
             attack(base, 10);
-        } 
+        }
     }
 
     @Override

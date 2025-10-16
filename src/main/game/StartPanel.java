@@ -15,6 +15,7 @@ public class StartPanel extends JPanel{
         setBounds(0, 0, 420, 420);;
 
         JButton startButton = new JButton("Start Game");
+
         startButton.setBounds(150, 180, 120, 40);
         startButton.addActionListener((ActionEvent e) -> StartGame());
         add(startButton);
@@ -28,6 +29,9 @@ public class StartPanel extends JPanel{
 
         frame.revalidate();
         frame.repaint();
+
+        gamePanel.setFocusable(true);
+        gamePanel.requestFocusInWindow();
 
         gamePanel.startGameThread();
     }

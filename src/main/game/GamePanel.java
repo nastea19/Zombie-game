@@ -52,6 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
         // ?
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(boardWidth, boardHeight));
+        System.out.println(this.getPreferredSize());
         this.setDoubleBuffered(true);
 
         tileManager = new TileManager(this);
@@ -60,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
         // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
 
-        zombieSpawner = new ZombieSpawner(zombies, boardHeight, boardWidth, tileSize, base);
+        zombieSpawner = new ZombieSpawner(zombies, 576, boardHeight, tileSize, base);
 
         
     }

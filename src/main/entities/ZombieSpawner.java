@@ -12,11 +12,11 @@ public class ZombieSpawner {
     private Base base;
 
     private long lastSpawnTime = 0;
-    private long spawnCooldown = 5000; // 10 seconds
+    private long spawnCooldown = 10000; // 10 seconds
 
     public ZombieSpawner(ArrayList<Zombie> zombies, int boardWidth, int boardHeight, int tileSize, Base base) {
         this.zombies = zombies;
-        this.boardWidth = boardHeight;
+        this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         this.tileSize = tileSize;
         this.base = base;
@@ -34,8 +34,9 @@ public class ZombieSpawner {
     private void spawnZombies() {
         for (int i = 0; i < 3; i++) {
             int x = boardWidth - tileSize;
-            int y = getRandomNumber(tileSize, boardWidth - tileSize);
-            zombies.add(new Zombie(null, x, y, tileSize, tileSize, base));
+            int y = getRandomNumber(tileSize, boardHeight - tileSize);
+            Zombie zombie = new Zombie(null, x, y, tileSize, tileSize, base);
+            zombies.add(zombie);
         }
     }
 

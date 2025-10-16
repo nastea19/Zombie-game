@@ -8,7 +8,6 @@ import javax.swing.SwingUtilities;
 
 import game.GamePanel;
 
-
 /**
  * Base class represents the player's base in the game.
  * The base has HP (health points).
@@ -28,15 +27,20 @@ public class Base extends Entity {
     private boolean destroyed = false;
 
     // Check if the base HP has reached 0 and if it hasn’t already been destroyed
-    // If so, mark as destroyed, show a Game Over popup safely on the Event Dispatch Thread,
+    // If so, mark as destroyed, show a Game Over popup safely on the Event Dispatch
+    // Thread,
     // and exit the game
     @Override
     public void update() {
         if (hp <= 0 && !destroyed) {
             destroyed = true;
+
+            // Stop the game loop
+            if (gamePanel.gameThread != null) {
+                gamePanel.gameThread = null;
+            }
             SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(gamePanel, "Game Over!");
-                System.exit(0);
+                JOptionPane.showMessageDialog(gamePanel, "Game Over!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
             });
         }
     }

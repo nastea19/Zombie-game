@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     public int boardHeight = rowCount * tileSize;
 
     public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+    public Base base;
 
     public TileManager tileManager;
     private BufferedImage backgroundImage;
@@ -54,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
 
         tileManager = new TileManager(this);
-        Base base = tileManager.getBase();
+        base = tileManager.getBase();
 
         // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
@@ -113,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
     // keeps the program running until you stop it
     // useful for repetitive processes (fps)
-    Thread gameThread;
+    public Thread gameThread;
 
     public void startGameThread() {
         // initiation and starting of the game thread
@@ -151,6 +152,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        if (base != null) {
+            base.update();
+        }
+
         if (player != null) {
             player.update(); // player handles its own movement
         }
@@ -193,8 +198,14 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             // Remove player if HP <= 0
+            // we use invokeLater so it does not interfere in the game thread, just is
+            // handled by EDT after
             if (player.getHp() <= 0) {
                 player = null; // player disappears
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Game Over!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                });
+                gameThread = null; // stop game loop
             }
 
         }

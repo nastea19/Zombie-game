@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements Runnable {
         // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
 
-        zombieSpawner = new ZombieSpawner(zombies, 576, boardHeight, tileSize, base);
+        zombieSpawner = new ZombieSpawner(zombies, boardWidth, boardHeight, tileSize, base);
 
         
     }

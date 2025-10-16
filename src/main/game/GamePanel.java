@@ -6,6 +6,10 @@ import entities.Bullet;
 import entities.Player;
 import entities.Zombie;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import tile.TileManager;
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 
     public TileManager tileManager;
+    private BufferedImage backgroundImage;
     InputController keyH = new InputController();
     Player player;
     public Zombie zombie;
@@ -37,6 +42,11 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public GamePanel() {
+        try {
+            backgroundImage = ImageIO.read(getClass().getResourceAsStream("/resources/background.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setBackground(Color.black);
         this.addKeyListener(keyH);
         // ?
@@ -51,17 +61,20 @@ public class GamePanel extends JPanel implements Runnable {
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
 
         for (int i = 0; i < 3; i++) {
-            zombie = new Zombie(this, boardWidth - tileSize, 
-            getRandomNumber(0 + tileSize, boardHeight) - tileSize, tileSize, tileSize, base);
+            int x = boardWidth - tileSize;
+            int y = getRandomNumber(0 + tileSize, boardHeight) - tileSize;
+
+            zombie = new Zombie(this, x, y, tileSize, tileSize, base);
             zombies.add(zombie);
         }
+        
     }
 
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Zombie Combat"); // Creates the window
         GamePanel panel = new GamePanel(); // Creates an instance of our custom game panel
-
+        
         frame.add(panel); // add the panel to the window so it becomes the visible area we draw on
         frame.pack();
         frame.setVisible(true); // makes the window visible
@@ -78,8 +91,12 @@ public class GamePanel extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        tileManager.draw(g2);
-        // draw each zombie in the list
+
+        g.drawImage(backgroundImage, 0, 0, boardWidth, boardHeight, this); // draws a baxkground
+        tileManager.draw(g2); // draws the base
+
+        
+        // draw each zombie in the list:
         for (Zombie zombie: zombies) {
             zombie.draw(g2);
         }
@@ -140,10 +157,10 @@ public class GamePanel extends JPanel implements Runnable {
             player.update(); // player handles its own movement
         }
 
+        zombies.removeIf(zombie -> zombie.getHp() <= 0);
+
         for (Zombie zombie: zombies) {
-            if (zombie != null) {
-                zombie.update(); // moves zombie
-            }
+            zombie.update();
         }
         // loops through all bullets in the list
         for (int i = 0; i < bullets.size(); i++) {
@@ -156,6 +173,8 @@ public class GamePanel extends JPanel implements Runnable {
                 i--; // Adjust index since list size changed
             }
         }
+
+        
         
         if (player != null && zombie != null) {
             boolean collision = player.x < zombie.x + zombie.width &&
@@ -173,9 +192,7 @@ public class GamePanel extends JPanel implements Runnable {
                 player = null; // player disappears
             }
 
-            if (zombie.getHp() <= 0) {
-                zombie = null; // zombie disappears
-            }
+           
         }
     }
 

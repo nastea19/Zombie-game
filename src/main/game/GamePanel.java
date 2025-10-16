@@ -63,7 +63,6 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = 0; i < 3; i++) {
             int x = boardWidth - tileSize;
             int y = getRandomNumber(0 + tileSize, boardHeight) - tileSize;
-
             zombie = new Zombie(this, x, y, tileSize, tileSize, base);
             zombies.add(zombie);
         }

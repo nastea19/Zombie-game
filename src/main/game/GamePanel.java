@@ -34,14 +34,15 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileManager;
     private BufferedImage backgroundImage;
 
+    // for manual double buffering
+    private BufferedImage offscreenImage;
+    private Graphics2D offscreenGraphics;
 
     InputController keyH = new InputController();
     Player player;
 
     public int min;
     public int max;
-
-    
 
     public GamePanel() {
         try {
@@ -65,34 +66,50 @@ public class GamePanel extends JPanel implements Runnable {
 
         zombieSpawner = new ZombieSpawner(zombies, boardWidth, boardHeight, tileSize, base);
 
-        
-    }
+        // creates a hidden image and a graphics context you can draw
+        offscreenImage = new BufferedImage(boardWidth, boardHeight, BufferedImage.TYPE_INT_ARGB);
+        offscreenGraphics = offscreenImage.createGraphics();
 
+    }
 
     @Override
     // "super" relates to the parent class (JPanel)
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
 
-        g.drawImage(backgroundImage, 0, 0, boardWidth, boardHeight, this); // draws a baxkground
-        tileManager.draw(g2); // draws the base
+        // if offscreen graphics hasn't been created, create it
+        if (offscreenImage == null || offscreenGraphics == null) {
+            offscreenImage = new BufferedImage(boardWidth, boardHeight, BufferedImage.TYPE_INT_ARGB);
+            offscreenGraphics = offscreenImage.createGraphics();
+        }
+
+        // clear the offscreen buffer
+        offscreenGraphics.setColor(Color.BLACK);
+        offscreenGraphics.fillRect(0, 0, boardWidth, boardHeight);
+
+        // draw everything to the offscreen graphics
+        offscreenGraphics.drawImage(backgroundImage, 0, 0, boardWidth, boardHeight, null);
+        tileManager.draw(offscreenGraphics);
 
         // draw each zombie in the list:
         for (Zombie zombie : zombies) {
-            zombie.draw(g2);
+            zombie.draw(offscreenGraphics);
         }
         // draw each bullet in the list
         synchronized (bullets) {
             for (Bullet b : bullets) {
-                b.draw(g2);
+                b.draw(offscreenGraphics);
             }
         }
 
         // the player disappears when HP <=0
         if (player != null && player.getHp() >= 0) {
-            player.draw(g2);
+            player.draw(offscreenGraphics);
         }
+
+        // draw the entire offscreen image to the real screen
+        g.drawImage(offscreenImage, 0, 0, null);
+
     }
 
     // FPS

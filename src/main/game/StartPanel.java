@@ -22,7 +22,6 @@ public class StartPanel extends JPanel{
         frame.setResizable(false);
 
         JButton startButton = new JButton("Start Game");
-        startButton.setFocusable(false);
         startButton.addActionListener((ActionEvent e) -> StartGame());
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -45,7 +44,6 @@ public class StartPanel extends JPanel{
         frame.repaint();
 
         gamePanel.startGameThread();
-
         gamePanel.requestFocusInWindow();
     }
 }

@@ -33,6 +33,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public TileManager tileManager;
     private BufferedImage backgroundImage;
+
+
     InputController keyH = new InputController();
     Player player;
 

@@ -30,10 +30,10 @@ public class Player extends Entity {
     // extracting the sprite images
     public void getPlayerImage() {
         try {
-            up = ImageIO.read(this.getClass().getResourceAsStream("/resources/up.jpg"));
-            down = ImageIO.read(getClass().getResourceAsStream("/resources/down.jpg"));
-            left = ImageIO.read(getClass().getResourceAsStream("/resources/left.jpg"));
-            right = ImageIO.read(getClass().getResourceAsStream("/resources/right.jpg"));
+            up = ImageIO.read(this.getClass().getResourceAsStream("/resources/up1png.png"));
+            down = ImageIO.read(getClass().getResourceAsStream("/resources/down1.png"));
+            left = ImageIO.read(getClass().getResourceAsStream("/resources/left1.png"));
+            right = ImageIO.read(getClass().getResourceAsStream("/resources/right1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

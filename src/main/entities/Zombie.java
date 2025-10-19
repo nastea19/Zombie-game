@@ -2,6 +2,10 @@ package entities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import game.GamePanel;
 import entities.Base;
 import entities.Entity;
@@ -16,17 +20,29 @@ import entities.Entity;
 public class Zombie extends Entity {
     private Base base;
     private boolean active = true;
-
+    private BufferedImage zombieImage;
+    GamePanel gamePanel = new GamePanel();
+    
     public Zombie(GamePanel gamePanel, int x, int y, int width, int height, Base base) {
         super(gamePanel, x, y, width, height);
         this.base = base;
         this.maxHp = 100;
         this.hp = maxHp;
         this.speed = 1;
+
+        getZombieImage();
     }
 
     public boolean isActive() {
         return active;
+    }
+
+    public void getZombieImage() {
+        try {
+           zombieImage = ImageIO.read(this.getClass().getResourceAsStream("/resources/zombie.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -40,8 +56,9 @@ public class Zombie extends Entity {
 
     @Override
     public void draw(Graphics2D g2) {
-        g2.setColor(new Color(0x3F7E26));
-        g2.fillRect(x, y, width, height);
+        if (zombieImage != null) {
+            g2.drawImage(zombieImage, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        }
 
         drawHpBar(g2, 0, -10);
     }

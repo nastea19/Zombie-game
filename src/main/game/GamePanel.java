@@ -29,6 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
     private ZombieSpawner zombieSpawner;
+    private int killsCounter = 0;
     public Base base;
 
     public TileManager tileManager;
@@ -165,8 +166,8 @@ public class GamePanel extends JPanel implements Runnable {
         zombies.removeIf(z -> z.getHp() <= 0);
 
         synchronized (zombies) {
-            for (Zombie z : zombies) {
-                z.update();
+            for (Zombie zombie : zombies) {
+                zombie.update();
             }
         }
         zombieSpawner.update();
@@ -199,14 +200,13 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
-
             // Remove player if HP <= 0
             // we use invokeLater so it does not interfere in the game thread, just is
             // handled by EDT after
             if (player.getHp() <= 0) {
                 player = null; // player disappears
                 SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(this, "Game Over!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Game Over! You killed " + killsCounter + " zombies.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
                 });
                 gameThread = null; // stop game loop
             }

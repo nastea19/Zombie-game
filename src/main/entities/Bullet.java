@@ -3,7 +3,6 @@ package entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import game.GamePanel;
-import entities.Zombie;
 
 
 public class Bullet extends Entity {

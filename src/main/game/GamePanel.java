@@ -33,6 +33,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public TileManager tileManager;
     private BufferedImage backgroundImage;
+    private boolean gameOver = false; 
 
     // for manual double buffering
     private BufferedImage offscreenImage;
@@ -164,7 +165,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         synchronized (zombies) {
             Iterator<Zombie> it = zombies.iterator();
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 Zombie zombie = it.next();
                 if (zombie.getHp() <= 0) {
                     it.remove();
@@ -207,22 +208,66 @@ public class GamePanel extends JPanel implements Runnable {
             // Remove player if HP <= 0
             // we use invokeLater so it does not interfere in the game thread, just is
             // handled by EDT after
-            if (player.getHp() <= 0) {
+            if (!gameOver && player != null && player.getHp() <= 0) {
+                gameOver = true; // set flag so dialog shows only once
                 player = null; // player disappears
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(this, "Game Over! You killed " + killsCounter + " zombies.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-                });
-                gameThread = null; // stop game loop
+                showGameOverDialog("You killed " + killsCounter + " zombies!");
             }
 
-            if (base.getHp() <= 0) {
+            if (!gameOver && base != null && base.getHp() <= 0) {
+                gameOver = true; // set flag so dialog shows only once
                 base = null; // base disappears
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(this, "Game Over! You killed " + killsCounter + " zombies.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-                });
-                gameThread = null; // stop game loop
+                showGameOverDialog("You killed " + killsCounter + " zombies!");
             }
+
         }
+    }
+
+    // Game over dialog with "Start Over" button
+    private void showGameOverDialog(String message) {
+        gameThread = null; //stop the game loop
+
+        SwingUtilities.invokeLater(() -> {
+            // Create a restart button
+            JButton restartButton = new JButton("Start Over");
+
+            // create the message
+            JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
+            panel.add(new JLabel("Game Over! " + message, SwingConstants.CENTER));
+            panel.add(restartButton);
+
+            JOptionPane optionPane = new JOptionPane(panel, JOptionPane.INFORMATION_MESSAGE,
+                    JOptionPane.DEFAULT_OPTION);
+            JDialog dialog = optionPane.createDialog(this, "Game Over");
+
+            // Add button behavior
+            restartButton.addActionListener(e -> {
+                dialog.dispose(); // close popup
+                restartGame(); // restart the game
+            });
+
+            dialog.setVisible(true);
+        });
+
+    }
+
+    // all the HP values are restored and the game starts over
+    private void restartGame() {
+        zombies.clear();
+        bullets.clear();
+
+        
+        base = tileManager.getBase();
+        base.resetHp();
+
+        player = new Player(this, keyH, 100, 100, tileSize, tileSize);
+        zombieSpawner = new ZombieSpawner(zombies, boardWidth, boardHeight, tileSize, base);
+        killsCounter = 0;
+
+        gameOver = false; // reset the game over flag
+
+        startGameThread();
+        requestFocusInWindow();
     }
 
     // This list stores all active bullets currently on the screen.

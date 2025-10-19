@@ -40,6 +40,7 @@ public class TileManager {
         return base;
     }
 
+
     /**
      * Draws all tiles managed by this TileManager.
      * @param g2 Graphics2D object from GamePanel

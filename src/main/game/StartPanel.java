@@ -1,6 +1,4 @@
 package game;
-
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,8 +11,6 @@ import javax.swing.JPanel;
 
 public class StartPanel extends JPanel{
     private JFrame frame;
-    private GamePanel gamePanel;
-
     public StartPanel(JFrame frame) {
         this.frame = frame;
         setLayout(new GridBagLayout());

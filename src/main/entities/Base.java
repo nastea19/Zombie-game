@@ -2,10 +2,6 @@ package entities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import game.GamePanel;
 
 /**
@@ -45,5 +41,9 @@ public class Base extends Entity {
         }
 
         drawHpBar(g2, 5, 5);
+    }
+
+    public void resetHp() {
+        this.hp = 1000;
     }
 }

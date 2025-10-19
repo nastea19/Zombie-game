@@ -216,7 +216,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             if (base.getHp() <= 0) {
-                base = null; // player disappears
+                base = null; // base disappears
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(this, "Game Over! You killed " + killsCounter + " zombies.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
                 });

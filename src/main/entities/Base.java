@@ -32,17 +32,7 @@ public class Base extends Entity {
     // and exit the game
     @Override
     public void update() {
-        if (hp <= 0 && !destroyed) {
-            destroyed = true;
-
-            // Stop the game loop
-            if (gamePanel.gameThread != null) {
-                gamePanel.gameThread = null;
-            }
-            SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(gamePanel, "Game Over!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            });
-        }
+        
     }
 
     @Override

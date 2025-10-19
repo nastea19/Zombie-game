@@ -13,10 +13,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 import tile.TileManager;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 //Runnable is the key for using Threads
 public class GamePanel extends JPanel implements Runnable {
@@ -163,11 +162,16 @@ public class GamePanel extends JPanel implements Runnable {
             player.update(); // player handles its own movement
         }
 
-        zombies.removeIf(z -> z.getHp() <= 0);
-
         synchronized (zombies) {
-            for (Zombie zombie : zombies) {
-                zombie.update();
+            Iterator<Zombie> it = zombies.iterator();
+            while(it.hasNext()) {
+                Zombie zombie = it.next();
+                if (zombie.getHp() <= 0) {
+                    it.remove();
+                    killsCounter++;
+                } else {
+                    zombie.update();
+                }
             }
         }
         zombieSpawner.update();
@@ -211,6 +215,13 @@ public class GamePanel extends JPanel implements Runnable {
                 gameThread = null; // stop game loop
             }
 
+            if (base.getHp() <= 0) {
+                base = null; // player disappears
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Game Over! You killed " + killsCounter + " zombies.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                });
+                gameThread = null; // stop game loop
+            }
         }
     }
 

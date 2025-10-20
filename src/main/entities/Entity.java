@@ -4,24 +4,46 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import game.GamePanel;
 /**
- * Super class that is used for both player and zombie class.
+ * Super class that is used for both player, zombie, and base class. 
+ * It defines shared attributes (position, health, movement speed) 
+ * and common behaviors such as taking damage, attacking, and drawing HP bars.
  */
+
 public class Entity {
     protected GamePanel gamePanel;
 
     public int x; // x-coordinate of the entity
     public int y; // y-coordinate of the entity
-    public int width; 
-    public int height;
-    protected int speed;
+    public int width; // width of the entity in pixels
+    public int height; // height of the entity in pixels
+    protected int speed; // movement speed pixels per update
 
-    public BufferedImage image, up, down, right, left;
+    /** Buffered images used for rendering the entity in different directions. */
+    public BufferedImage image;
+    public BufferedImage up;
+    public BufferedImage down;
+    public BufferedImage left;
+    public BufferedImage right;
+    
+    /** Current movement direction ("up", "down", "left", "right"). */
     public String direction;
 
+    protected int hp; // current health points od the entity
+    protected int maxHp; // maximum health points of the entity
 
-    protected int hp;
-    protected int maxHp;
+    /** Time tracking variables for attack cooldown. */
+    private long lastAttackTime = 0;
+    private long attackCooldown = 1000; // 1000 milliseconds = 1 second
 
+    /**
+     * Constructs a new {@code Entity} with the specified parameters.
+     *
+     * @param gamePanel reference to the main {@code GamePanel}
+     * @param x         initial X position
+     * @param y         initial Y position
+     * @param width     width of the entity
+     * @param height    height of the entity
+     */
     public Entity(GamePanel gamePanel, int x, int y, int width, int height) {
         this.gamePanel = gamePanel;
         this.x = x;
@@ -33,6 +55,8 @@ public class Entity {
     /**
      * The method is used in Base, Player, Zombie entities.
      * It occurs after zombie-player, zombie-base, bullet-zombie collision.
+     * 
+     * @param damageAmount amount of damage taken
      */
     public void takeDamage(int damageAmount) {
         hp -= damageAmount;
@@ -42,9 +66,12 @@ public class Entity {
         }
     }
 
-    private long lastAttackTime = 0;
-    private long attackCooldown = 1000; // 1000 milliseconds = 1 second
-
+    /**
+     * Makes this entity attack another entity if the cooldown period has passed.
+     *
+     * @param target the entity to attack
+     * @param damageAmount the amount of damage inflicted
+     */
     public void attack(Entity target, int damageAmount) {
         long currentTime = System.currentTimeMillis();
 
@@ -54,6 +81,13 @@ public class Entity {
         }
     }
 
+    /**
+     * Draws a health bar above the entity representing its current HP status.
+     *
+     * @param g2  the graphics context used for drawing
+     * @param offsetX  horizontal offset from the entity’s position
+     * @param offsetY  vertical offset from the entity’s position
+     */
     protected void drawHpBar(Graphics2D g2, int offsetX, int offsetY) {
         if (maxHp <= 0) {
             return;
@@ -103,15 +137,29 @@ public class Entity {
         this.y = y;
     }
 
+    /**
+     * Sets the entity’s HP, ensuring it stays within the valid range [0, maxHp].
+     *
+     * @param hp the new HP value
+     */
     public void setHp(int hp) {
         this.hp = Math.max(0, Math.min(hp, maxHp));
     }
 
-    // Common methods every entity has
+    /**
+     * Updates the entity’s state. This method is overridden by subclasses
+     * (e.g., Player, Zombie, Base, Bullet) to define specific movement or behavior.
+     */
     public void update() {
 
     }
 
+    /**
+     * Draws the entity on the screen using the given graphics context.
+     * Should be overridden by subclasses.
+     *
+     * @param g2 the {@code Graphics2D} context for drawing
+     */
     public void draw(Graphics2D g2) {
 
     }

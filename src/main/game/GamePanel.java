@@ -56,7 +56,6 @@ public class GamePanel extends JPanel implements Runnable {
         // ?
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(boardWidth, boardHeight));
-        System.out.println(this.getPreferredSize());
         this.setDoubleBuffered(true);
 
         tileManager = new TileManager(this);

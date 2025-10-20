@@ -1,0 +1,26 @@
+# Zombie Combat
+*Zombie Combat* is a 2D Java game where you must defend your base against batches of zombies. Survive as long as you can by shooting zombies - once either your health points or the health base of the base reaches 0, the game is over. The number of zombies you managed to elminate is displayes after the game is over.
+
+# Controls
+By pressing or holding:
+ - **W** - character moves up
+ - **A** - character moves left
+ - **S** - character moves down
+ - **D** - character moves right
+ - **Spacebar** - character shoots bullets
+
+ # Game Mechanics
+ - A batch of 3 zombies spawn every 10 seconds at random positions on the border of the screen.
+ - The player, zombies, and base all have HP (Health Points).
+ - If **player HP <= 0** or **base HP <= 0**, the game ends.
+ - The *Game Over* screen shows the total number of zombies killed.
+
+ # Research Topics
+ - **GitHub** - We learned how to use GitHub for working on the same project wihtout conflicts by tracking changer and commits.
+ - **Double Buffering** - Double Buffering makes animations and movement of elements look smoother. 
+
+ # Design Sources and Credits
+ - **Background** Originally created by Tetiana Lazunova on [vecteezy.com] (https://www.vecteezy.com/vector-art/46431159-pixel-game-menu-retro-game-buttons-8-bit-game-asset-ui-interface-elements-for-mobile-and-web-game-arcade-game-design-set?utm_source=pinterest&utm_medium=social) and sourced by us from Pinterest, edited and modified with ChatGPT image tools. 
+ - **Zombies** Generated using ChatGPT image tools, slightly modified by us.
+ - **Base Tiles** Designed entirely by us.
+ - **Player Character** Image found on Pinterest.

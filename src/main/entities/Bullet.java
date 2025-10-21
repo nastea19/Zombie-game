@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /*
- * 
+ * We use the bullet entity for shooting from the player and it deals damage to zombies
  */
 public class Bullet extends Entity {
 
@@ -16,7 +16,14 @@ public class Bullet extends Entity {
     private boolean active = true; // bullet is active until it hits something
 
     /*
-     * 
+     * @param gp
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param dx
+     * @param dy
+     * @param speed
      */
     public Bullet(GamePanel gp, int x, int y, int width, int height, int dx, int dy, int speed) {
         super(gp, x, y, width, height);
@@ -26,7 +33,8 @@ public class Bullet extends Entity {
     }
 
     /*
-     * 
+     * this method updates the position of he bullet, removes them when off-screen,
+     * checks for zombie-bullet collision and deals damage
      */
     public void update() {
         if (!active) {
@@ -61,7 +69,7 @@ public class Bullet extends Entity {
     }
 
     /*
-     * 
+     * displays the bullet
      */
     public void draw(Graphics2D g2) {
         g2.setColor(Color.YELLOW);
@@ -69,18 +77,17 @@ public class Bullet extends Entity {
     }
 
     /*
-     * 
+     * Off-screen if x or y is outside the board width/height
      */
     public boolean isOffScreen() {
-        // Off-screen if x or y is outside the board width/height
         return x < 0 || x > gamePanel.boardWidth || y < 0 || y > gamePanel.boardHeight;
     }
 
     /*
-     * 
+     * checks whether the bullet is functional (not removed)
      */
     public boolean isActive() {
         return active;
-        
+
     }
 }

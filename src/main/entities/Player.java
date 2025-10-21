@@ -8,7 +8,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * 
+ * displays, updates the movement of the player and the image change of the
+ * sprite, creates the bullets and manages the attack
+ * removes the player when he dies
  */
 public class Player extends Entity {
 
@@ -38,7 +40,7 @@ public class Player extends Entity {
     }
 
     /*
-     * 
+     * takes the sprite's images from resources
      */
     public void getPlayerImage() {
         try {

@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * 
+ */
 public class Player extends Entity {
 
     private InputController keyH;
@@ -14,6 +17,15 @@ public class Player extends Entity {
     // up, down, left, or right
     private String direction = "right";
 
+    /**
+     * 
+     * @param gp
+     * @param keyH
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
     public Player(GamePanel gp, InputController keyH, int x, int y, int width, int height) {
         super(gp, x, y, width, height);
         this.gp = gp;
@@ -25,7 +37,9 @@ public class Player extends Entity {
         getPlayerImage();
     }
 
-    // extracting the sprite images
+    /*
+     * 
+     */
     public void getPlayerImage() {
         try {
             up = ImageIO.read(this.getClass().getResourceAsStream("/resources/up1png.png"));
@@ -111,6 +125,9 @@ public class Player extends Entity {
     private long lastAttackTime = 0;
     private long attackCooldown = 1000; // 1000 milliseconds = 1 second
 
+    /*
+     * 
+     */
     public void attack(Entity target, int damageAmount) {
         long currentTime = System.currentTimeMillis();
 

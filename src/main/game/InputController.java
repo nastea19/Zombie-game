@@ -5,9 +5,15 @@ package game;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/*
+ * 
+ */
 public class InputController implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed;
+    public boolean downPressed;
+    public boolean leftPressed;    
+    public boolean rightPressed;    
     public boolean spacePressed;
 
     @Override

@@ -6,16 +6,14 @@ import entities.Bullet;
 import entities.Player;
 import entities.Zombie;
 import entities.ZombieSpawner;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import tile.TileManager;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 //Runnable is the key for using Threads
 public class GamePanel extends JPanel implements Runnable {

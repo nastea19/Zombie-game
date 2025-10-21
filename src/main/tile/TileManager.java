@@ -1,11 +1,11 @@
 package tile;
 
+import entities.Base;
+import game.GamePanel;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import entities.Base;
-import game.GamePanel;
 
 public class TileManager {
     private GamePanel gamePanel;

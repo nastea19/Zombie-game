@@ -1,13 +1,13 @@
 # Zombie Combat
-*Zombie Combat* is a 2D Java game where you must defend your base against batches of zombies. Survive as long as you can by shooting zombies - once either your health points or the health base of the base reaches 0, the game is over. The number of zombies you managed to elminate is displayes after the game is over.
+*Zombie Combat* is a 2D Java game where you must defend your base against batches of zombies. Survive as long as you can by shooting zombies - once either your health points or the health points of the base reaches 0, the game is over. The number of zombies you managed to elminate is displayed after the game is over.
 
 # Controls
 By pressing or holding:
- - **W** - character moves up
- - **A** - character moves left
- - **S** - character moves down
- - **D** - character moves right
- - **Spacebar** - character shoots bullets
+ - **W** - player moves up
+ - **A** - player moves left
+ - **S** - player moves down
+ - **D** - player moves right
+ - **Spacebar** - player shoots bullets
 
  # Game Mechanics
  - A batch of 3 zombies spawn every 10 seconds at random positions on the border of the screen.

@@ -13,7 +13,16 @@ import java.awt.image.BufferedImage;
  */
 public class Base extends Entity {
 
-    
+    /**
+     * Constructs a {@code Base} object with the specified position, size, and image.
+     *
+     * @param gamePanel reference to the main {@link GamePanel} used for rendering and updates
+     * @param x the X-coordinate of the base
+     * @param y the Y-coordinate of the base
+     * @param width the width of the base in pixels
+     * @param height the height of the base in pixels
+     * @param image the tile image used to visually build the base
+     */
     public Base(GamePanel gamePanel, int x, int y, int width, int height, BufferedImage image) {
         super(gamePanel, x, y, width, height);
         this.image = image;
@@ -43,6 +52,10 @@ public class Base extends Entity {
         drawHpBar(g2, 5, 5);
     }
 
+    /*
+     * Resets the base's original maximum value.
+     * Used when reseting the game.
+     */
     public void resetHp() {
         this.hp = 1000;
     }

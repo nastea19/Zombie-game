@@ -15,11 +15,20 @@ import javax.imageio.ImageIO;
  * Zombie dies after its HP is below or equal to 0.
  */
 public class Zombie extends Entity {
-    private Base base;
-    private boolean active = true;
+    private Base base; // reference to the player's base, used for collision logic 
     private BufferedImage zombieImage;
     GamePanel gamePanel = new GamePanel();
     
+    /**
+     * Constructs a {@code Base} object with the specified position, size, and image.
+     *
+     * @param gamePanel reference to the main {@link GamePanel} used for rendering and updates
+     * @param x the X-coordinate of the zombie
+     * @param y the Y-coordinate of the zombie
+     * @param width the width of the zombie tile in pixels
+     * @param height the height of the zombie tile in pixels
+     * @param base reference to {@link Base} used for collisions logic
+     */
     public Zombie(GamePanel gamePanel, int x, int y, int width, int height, Base base) {
         super(gamePanel, x, y, width, height);
         this.base = base;
@@ -30,13 +39,13 @@ public class Zombie extends Entity {
         getZombieImage();
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
+    /*
+     * Loads the zombie image from the resource package.
+     */
     public void getZombieImage() {
         try {
-           zombieImage = ImageIO.read(this.getClass().getResourceAsStream("/resources/zombie.png"));
+            zombieImage = ImageIO.read(this.getClass()
+            .getResourceAsStream("/resources/zombie.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

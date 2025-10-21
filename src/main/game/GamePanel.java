@@ -1,4 +1,5 @@
 //view
+
 package game;
 
 import entities.Base;
@@ -18,19 +19,21 @@ import tile.TileManager;
 //Runnable is the key for using Threads
 public class GamePanel extends JPanel implements Runnable {
     // screen settings
-    final int rowCount = 12;
-    final int columnCount = 18;
-    public int tileSize = 32; // pixels
-    public int boardWidth = columnCount * tileSize;
-    public int boardHeight = rowCount * tileSize;
+    final int rowCount = 12; // number of tiles in a row
+    final int columnCount = 18; // number of tiles in a column
+    public int tileSize = 32; // tile size in pixels
+    public int boardWidth = columnCount * tileSize; // in pixels
+    public int boardHeight = rowCount * tileSize; // in pixels
 
-    public ArrayList<Zombie> zombies = new ArrayList<Zombie>();
-    private ZombieSpawner zombieSpawner;
-    private int killsCounter = 0;
-    public Base base;
+    public ArrayList<Zombie> zombies = new ArrayList<Zombie>(); 
+    // arraylist that stores the active zombies on the screen
+    private ZombieSpawner zombieSpawner; 
+    // references the ZombieSpawner class, used for spawning a batch of 3 zombies every 10 seconds
+    private int killsCounter = 0; // number of zombies eliminated
+    public Base base; // reference to the Base class
 
-    public TileManager tileManager;
-    private BufferedImage backgroundImage;
+    public TileManager tileManager; // reference to the tileManager, used for drawing the base 
+    private BufferedImage backgroundImage; 
     private boolean gameOver = false; 
 
     // for manual double buffering
@@ -39,9 +42,6 @@ public class GamePanel extends JPanel implements Runnable {
 
     InputController keyH = new InputController();
     Player player;
-
-    public int min;
-    public int max;
 
     public GamePanel() {
         try {

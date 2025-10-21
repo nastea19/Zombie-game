@@ -3,7 +3,7 @@
 
 # Controls
 By pressing or holding:
- - **W** - player moves up
+ - **W** - character moves up
  - **A** - player moves left
  - **S** - player moves down
  - **D** - player moves right

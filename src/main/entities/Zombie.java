@@ -1,14 +1,11 @@
 package entities;
 
+import game.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
-import game.GamePanel;
-import entities.Base;
-import entities.Entity;
 
 /**
  * Zombies autogenerate on a random position on the right end of the sceen.

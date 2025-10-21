@@ -1,8 +1,9 @@
 package entities;
 
+import game.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import game.GamePanel;
+
 
 /**
  * Base class represents the player's base in the game.
@@ -12,6 +13,7 @@ import game.GamePanel;
  */
 public class Base extends Entity {
 
+    
     public Base(GamePanel gamePanel, int x, int y, int width, int height, BufferedImage image) {
         super(gamePanel, x, y, width, height);
         this.image = image;
@@ -19,8 +21,6 @@ public class Base extends Entity {
         this.hp = maxHp;
 
     }
-
-    private boolean destroyed = false;
 
     // Check if the base HP has reached 0 and if it hasn’t already been destroyed
     // If so, mark as destroyed, show a Game Over popup safely on the Event Dispatch

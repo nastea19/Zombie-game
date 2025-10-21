@@ -16,11 +16,11 @@ By pressing or holding:
  - The *Game Over* screen shows the total number of zombies killed.
 
  # Research Topics
- - **GitHub** - We learned how to use GitHub for working on the same project wihtout conflicts by tracking changer and commits.
- - **Double Buffering** - Double Buffering makes animations and movement of elements look smoother. 
+ - **GitHub** - We learned how to use GitHub for working on the same project simultaneously without conflicts, by tracking changes and commits.
+ - **Double Buffering** - Double Buffering makes animations and movement of elements look smoother, by making the changes on backstage and displaying them to user afterwards. 
 
  # Design Sources and Credits
- - **Background** Originally sourced by us from Pinterest, edited and modified with ChatGPT image tools. 
+ - **Background** Originally sourced by us from Pinterest, edited and modified with ChatGPT image tools and background remover website. 
  - **Zombies** Generated using ChatGPT image tools, slightly modified by us.
  - **Base Tiles** Designed entirely by us.
  - **Player Character** Image found on Pinterest.

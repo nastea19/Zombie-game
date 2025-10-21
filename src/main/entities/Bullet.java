@@ -1,8 +1,8 @@
 package entities;
 
+import game.GamePanel;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import game.GamePanel;
 
 
 public class Bullet extends Entity {

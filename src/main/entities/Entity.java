@@ -1,8 +1,9 @@
 package entities;
 
+import game.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import game.GamePanel;
+
 /**
  * Super class that is used for both player, zombie, and base class. 
  * It defines shared attributes (position, health, movement speed) 

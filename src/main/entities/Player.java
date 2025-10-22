@@ -128,7 +128,7 @@ public class Player extends Entity {
     private long attackCooldown = 1000; // 1000 milliseconds = 1 second
 
     /*
-     * 
+     * manages the frequency of shooting 
      */
     public void attack(Entity target, int damageAmount) {
         long currentTime = System.currentTimeMillis();
@@ -140,9 +140,8 @@ public class Player extends Entity {
     }
 
     @Override
+    //draws the sprite itself on the game screen
     public void draw(Graphics2D g2) {
-        // g2.setColor(Color.BLUE);
-        // g2.fillRect(x, y, width, height);
         BufferedImage image = null;
 
         // changing the look of the sprite based on the direction it is going
@@ -161,5 +160,4 @@ public class Player extends Entity {
         }
         drawHpBar(g2, 0, -10);
     }
-
 }

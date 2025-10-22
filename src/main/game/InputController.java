@@ -1,24 +1,22 @@
-//Handles keyboard input
-
 package game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /*
- * 
+ * handles keyboard input through KeyListener
  */
 public class InputController implements KeyListener {
 
     public boolean upPressed;
     public boolean downPressed;
-    public boolean leftPressed;    
-    public boolean rightPressed;    
+    public boolean leftPressed;
+    public boolean rightPressed;
     public boolean spacePressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
-        //
+        // unused method, but mandatory for KeyListener functionality
     }
 
     @Override

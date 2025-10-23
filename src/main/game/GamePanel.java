@@ -1,4 +1,9 @@
-//view
+// View: Handles drawing a game logic
+/*
+ * This class manages the entire gameplay loop, including rendering,
+ * updates, and collisions between player, zombies, bullets, and the base.
+ * 
+ */
 
 package game;
 
@@ -34,37 +39,37 @@ public class GamePanel extends JPanel implements Runnable {
 
     public TileManager tileManager; // reference to the tileManager, used for drawing the base 
     private BufferedImage backgroundImage; 
-    private boolean gameOver = false; 
+    private boolean gameOver = false;  
 
     // for manual double buffering
     private BufferedImage offscreenImage;
     private Graphics2D offscreenGraphics;
 
-    InputController keyH = new InputController();
-    Player player;
+    InputController keyH = new InputController(); // keyboard input listener
+    Player player; //
 
+    // Constructor
     public GamePanel() {
         try {
             backgroundImage = ImageIO.read(getClass().getResourceAsStream("/resources/background.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Basic panel setup
         setBackground(Color.black);
         this.addKeyListener(keyH);
-        // ?
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(boardWidth, boardHeight));
         this.setDoubleBuffered(true);
 
+        // Initialize manager and entities
         tileManager = new TileManager(this);
         base = tileManager.getBase();
-
-        // width/height for player (e.g., one tile)
         player = new Player(this, keyH, 100, 100, tileSize, tileSize);
-
         zombieSpawner = new ZombieSpawner(zombies, boardWidth, boardHeight, tileSize, base);
 
-        // creates a hidden image and a graphics context you can draw
+        // Buffer for smoother graphics
         offscreenImage = new BufferedImage(boardWidth, boardHeight, BufferedImage.TYPE_INT_ARGB);
         offscreenGraphics = offscreenImage.createGraphics();
 
@@ -135,14 +140,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         // as long as the thread exists, the game will update
         while (gameThread != null) {
-
             currentTime = System.nanoTime();
-
-            // checking how much time passed??
             delta += (currentTime - lastTime) / drawInterval;
-
             lastTime = currentTime;
 
+            // WHen enough time passes, update + repaint one frame
             if (delta >= 1) {
                 update();
                 repaint();
@@ -152,14 +154,17 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
+        // Update base health and logic
         if (base != null) {
             base.update();
         }
 
+        // Update player movement and actions
         if (player != null) {
             player.update(); // player handles its own movement
         }
 
+        // update zombies
         synchronized (zombies) {
             Iterator<Zombie> it = zombies.iterator();
             while (it.hasNext()) {
@@ -172,6 +177,8 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         }
+
+        // Spawn 3 new zombies every 10 seconds 
         zombieSpawner.update();
 
         // loops through all bullets in the list
@@ -188,6 +195,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
 
+        // Check collisions between player and zombies
         if (player != null) {
             synchronized (zombies) {
                 for (Zombie z : zombies) {
@@ -228,7 +236,7 @@ public class GamePanel extends JPanel implements Runnable {
             // Create a restart button
             JButton restartButton = new JButton("Start Over");
 
-            // create the message
+            // Create the message
             JPanel panel = new JPanel(new GridLayout(2, 1, 5, 5));
             panel.add(new JLabel("Game Over! " + message, SwingConstants.CENTER));
             panel.add(restartButton);
@@ -237,7 +245,7 @@ public class GamePanel extends JPanel implements Runnable {
                     JOptionPane.DEFAULT_OPTION);
             JDialog dialog = optionPane.createDialog(this, "Game Over");
 
-            // Add button behavior
+            // Restart button handler
             restartButton.addActionListener(e -> {
                 dialog.dispose(); // close popup
                 restartGame(); // restart the game

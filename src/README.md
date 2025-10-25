@@ -24,3 +24,7 @@ By pressing or holding:
  - **Zombies** Generated using ChatGPT image tools, slightly modified by us.
  - **Base Tiles** Designed entirely by us.
  - **Player Character** Image found on Pinterest.
+
+ # Link to our GitHub Repository:
+ https://github.com/nastea19/Zombie-game.git
+ 

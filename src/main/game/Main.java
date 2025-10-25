@@ -4,6 +4,11 @@ import javax.swing.JFrame;
 
 /*
  * The entry point of the Zombie Combat game.
+ * 
+ * @author Popova Anastasia
+ * @id 2268116
+ * @author Kroumova Kremena
+ * @id 2243377
  */
 public class Main {
     public static void main(String[] args) {

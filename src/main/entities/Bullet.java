@@ -15,7 +15,7 @@ public class Bullet extends Entity {
 
     private boolean active = true; // bullet is active until it hits something
 
-    /*
+    /**
      * @param gp
      * @param x
      * @param y

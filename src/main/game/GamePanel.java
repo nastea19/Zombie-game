@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
     private Graphics2D offscreenGraphics;
 
     InputController keyH = new InputController(); // keyboard input listener
-    Player player; //
+    Player player; 
 
     // Constructor
     public GamePanel() {
